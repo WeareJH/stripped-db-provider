@@ -6,7 +6,7 @@
     "php": "^7.1",
     "magento/framework": "^102.0.0",
     "magento/module-backend": "*",
-    "n98/magerun2": "^3.0.0"
+    "n98/magerun2": "*"
   },
   "autoload": {
     "files": [
