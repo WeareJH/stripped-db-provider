@@ -1,0 +1,19 @@
+{
+  "name": "wearejh/stripped-db-provider",
+  "description": "Stripped DB Provider for Magento 2",
+  "type": "magento2-module",
+  "require": {
+    "php": "^7.2",
+    "magento/framework": "^102.0.0",
+    "magento/module-backend": "*",
+    "n98/magerun2": "^3.0.0"
+  },
+  "autoload": {
+    "files": [
+      "src/registration.php"
+    ],
+    "psr-4": {
+      "Jh\\StrippedDbProvider\\": "src/"
+    }
+  }
+}
