@@ -51,8 +51,8 @@ class DbUploader
             );
 
             $this->client = new S3Client([
-                'version' => '2019-09-16',
-                'region' => 'eu-west-1',
+                'version' => 'latest',
+                'region' => $this->config->getBucketRegion(),
                 'credentials' => $credentials
             ]);
         }

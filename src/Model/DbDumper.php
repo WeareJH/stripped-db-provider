@@ -31,28 +31,19 @@ class DbDumper
      */
     public function dumpDb(): string
     {
-        $cmdTemplate = "php -f ./vendor/bin/n98-magerun2 db:dump --root-dir=%s --strip=%s --no-interaction %s";
-        $cmdArgs = [BP, "@stripped @development", $this->getAbsoluteDumpPath(false)];
-        return $this->shell->execute($cmdTemplate, $cmdArgs);
-    }
-
-    /**
-     * @return string
-     * @throws LocalizedException
-     */
-    public function compressDump(): string
-    {
-        return $this->shell->execute("gzip %s", [$this->getAbsoluteDumpPath(false)]);
+        $cmd = "php -f ./vendor/bin/n98-magerun2 db:dump";
+        $cmdArgsTemplate = "--root-dir=%s --strip=%s --compression=%s --no-interaction %s";
+        $cmdArgs = [BP, "@stripped @development", "gzip", $this->getAbsoluteDumpPath()];
+        return $this->shell->execute($cmd . ' ' . $cmdArgsTemplate, $cmdArgs);
     }
 
     /**
      * Attempt to silently remove the database dumps
      * @return string
      */
-    public function cleanUp(): string
+    public function cleanUp()
     {
         try {
-            $this->shell->execute("rm %s", [$this->getAbsoluteDumpPath(false)]);
             $this->shell->execute("rm %s", [$this->getAbsoluteDumpPath(true)]);
         } catch (\Exception $e) {
             //empty
@@ -60,16 +51,11 @@ class DbDumper
     }
 
     /**
-     * @param bool $compressed
      * @return string
      */
-    public function getAbsoluteDumpPath(bool $compressed = true): string
+    public function getAbsoluteDumpPath(): string
     {
-        $fileName = sprintf(
-            "%s.sql%s",
-            $this->config->getProjectName(),
-            $compressed ? '.gz' : ''
-        );
+        $fileName = sprintf("%s.sql.gz", $this->config->getProjectName());
         return BP . '/var/' . $fileName;
     }
 }

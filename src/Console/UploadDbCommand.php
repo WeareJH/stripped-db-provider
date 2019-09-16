@@ -47,8 +47,6 @@ class UploadDbCommand extends Command
             $output->writeln('<fg=cyan;options=bold>Dumping Database...</>');
             $cmdOutput = $this->dbDumper->dumpDb();
             $output->writeln("<info>{$cmdOutput}</info>");
-            $output->writeln('<fg=cyan;options=bold>Compressing Database Dump...</>');
-            $this->dbDumper->compressDump();
             $output->writeln("<info>Compressed database is at {$this->dbDumper->getAbsoluteDumpPath()}</info>");
             $output->writeln('<fg=cyan;options=bold>Uploading Dump to Cloud Storage...</>');
             $this->dbUploader->uploadDBDump($this->dbDumper->getAbsoluteDumpPath());
