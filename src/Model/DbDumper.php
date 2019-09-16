@@ -56,7 +56,7 @@ class DbDumper
     public function cleanUp()
     {
         try {
-            $this->shell->execute("rm %s", [$this->getAbsoluteDumpPath(true)]);
+            $this->shell->execute("rm %s", [$this->getAbsoluteDumpPath()]);
         } catch (\Exception $e) {
             //empty
         }
