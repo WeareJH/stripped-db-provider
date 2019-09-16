@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+namespace Jh\StrippedDbProvider\Console;
+
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -21,18 +23,31 @@ class UploadDbCommand extends Command
     }
 
     /**
+     * @return void
+     */
+    protected function configure()
+    {
+        $this->setName('setup:db:backup-stripped-db');
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('<info>Upload DB Command</info>');
 
         try {
-            $this->dbDumper->dumpDb();
+            $output->writeln('<fg=cyan;options=bold>Dumping Database...</>');
+            $cmdOutput = $this->dbDumper->dumpDb();
+            $output->writeln("<info>{$cmdOutput}</info>");
+            $output->writeln('<fg=cyan;options=bold>Compressing Database Dump...</>');
+            $this->dbDumper->compressDump();
+            $output->writeln("<info>Compressed database is at {$this->dbDumper->getAbsoluteDumpPath()}</info>");
 
         } catch (\Exception $e) {
-
+            $output->writeln("<error>{$e->getMessage()}</error>");
+        } finally {
+            $this->dbDumper->cleanUp();
         }
-
     }
 }
