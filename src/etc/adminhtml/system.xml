@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="wearejh" translate="label" sortOrder="100">
+            <label>JH Modules</label>
+        </tab>
+        <section id="stripped-db-provider" translate="label" type="text" sortOrder="1" showInDefault="1">
+            <tab>wearejh</tab>
+            <label>Stripped DB Backups</label>
+            <resource>Jh_StrippedDbProvider::config</resource>
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1">
+                <label>General Settings</label>
+                <field id="project_name" translate="label comment" type="text" sortOrder="10" showInDefault="1">
+                    <label>Project Name</label>
+                    <comment><![CDATA[Identifiable name for the project. Eg. project_a]]></comment>
+                    <tooltip>Used for naming the file in the S3 Bucket</tooltip>
+                </field>
+                <field id="bucket_name" translate="label comment" type="text" sortOrder="20" showInDefault="1">
+                    <label>Bucket Name</label>
+                    <comment><![CDATA[Please enter your AWS S3 Bucket Name.]]></comment>
+                </field>
+                <field id="access_key_id" translate="label comment" type="text" sortOrder="30" showInDefault="1">
+                    <label>Access Key ID</label>
+                    <comment><![CDATA[Please enter your AWS S3 Bucket Access Key ID.]]></comment>
+                </field>
+                <field id="secret_access_key" translate="label comment" type="text" sortOrder="40" showInDefault="1">
+                    <label>Secret Access Key</label>
+                    <comment><![CDATA[Please enter your AWS S3 Bucket Secret Access Key.]]></comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

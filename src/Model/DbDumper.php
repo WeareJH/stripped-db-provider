@@ -14,9 +14,15 @@ class DbDumper
      */
     private $shell;
 
-    public function __construct(Shell $shell)
+    /**
+     * @var Config
+     */
+    private $config;
+
+    public function __construct(Config $config, Shell $shell)
     {
         $this->shell = $shell;
+        $this->config = $config;
     }
 
     /**
@@ -59,6 +65,11 @@ class DbDumper
      */
     public function getAbsoluteDumpPath(bool $compressed = true): string
     {
-        return BP . '/var/db-stripped.sql' . ($compressed ? '.gz' : '');
+        $fileName = sprintf(
+            "%s.sql%s",
+            $this->config->getProjectName(),
+            $compressed ? '.gz' : ''
+        );
+        return BP . '/var/' . $fileName;
     }
 }
