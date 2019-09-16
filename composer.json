@@ -6,7 +6,8 @@
     "php": "^7.1",
     "magento/framework": "^102.0.0",
     "magento/module-backend": "*",
-    "aws/aws-sdk-php": "^3.112.0"
+    "aws/aws-sdk-php": "^3.112.0",
+    "n98/magerun2": "^3.0.0"
   },
   "autoload": {
     "files": [
