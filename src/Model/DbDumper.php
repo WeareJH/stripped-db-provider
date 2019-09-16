@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Jh\StrippedDbProvider\Model;
 
+use Magento\Framework\Process\PhpExecutableFinderFactory;
+use Symfony\Component\Process\PhpExecutableFinder;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Shell;
 
@@ -19,10 +21,19 @@ class DbDumper
      */
     private $config;
 
-    public function __construct(Config $config, Shell $shell)
-    {
+    /**
+     * @var PhpExecutableFinder
+     */
+    private $phpFinder;
+
+    public function __construct(
+        Config $config,
+        PhpExecutableFinderFactory $phpFinderFactory,
+        Shell $shell
+    ) {
         $this->shell = $shell;
         $this->config = $config;
+        $this->phpFinder = $phpFinderFactory->create();
     }
 
     /**
@@ -31,7 +42,8 @@ class DbDumper
      */
     public function dumpDb(): string
     {
-        $cmd = "php -f ./vendor/bin/n98-magerun2 db:dump";
+        $phpPath = $this->phpFinder->find() ?: "php";
+        $cmd = "$phpPath -f ./vendor/bin/n98-magerun2 db:dump";
         $cmdArgsTemplate = "--root-dir=%s --strip=%s --compression=%s --no-interaction %s";
         $cmdArgs = [BP, "@stripped @development", "gzip", $this->getAbsoluteDumpPath()];
         return $this->shell->execute($cmd . ' ' . $cmdArgsTemplate, $cmdArgs);
