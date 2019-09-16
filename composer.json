@@ -4,7 +4,7 @@
   "type": "magento2-module",
   "require": {
     "php": "^7.1",
-    "magento/framework": "^102.0.0",
+    "magento/framework": "*",
     "magento/module-backend": "*",
     "aws/aws-sdk-php": "^3.112.0",
     "n98/magerun2": "^3.0.0"
