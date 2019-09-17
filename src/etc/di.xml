@@ -7,4 +7,12 @@
             </argument>
         </arguments>
     </type>
+    <type name="Magento\Config\Model\Config\TypePool">
+        <arguments>
+            <argument name="sensitive" xsi:type="array">
+                <item name="stripped_db_provider/storage/access_key_id" xsi:type="string">1</item>
+                <item name="stripped_db_provider/storage/secret_access_key" xsi:type="string">1</item>
+            </argument>
+        </arguments>
+    </type>
 </config>
