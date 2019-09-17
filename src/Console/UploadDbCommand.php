@@ -45,18 +45,17 @@ class UploadDbCommand extends Command
     {
         try {
             $output->writeln('<fg=cyan;options=bold>Dumping Database...</>');
-            $cmdOutput = $this->dbDumper->dumpDb();
-            $output->writeln("<info>{$cmdOutput}</info>");
-            $output->writeln("<info>Compressed database is at {$this->dbDumper->getAbsoluteDumpPath()}</info>");
+            $this->dbDumper->dumpDb();
+            $output->writeln("<info>Dump created at {$this->dbDumper->getAbsoluteDumpPath()}</info>");
             $output->writeln('<fg=cyan;options=bold>Uploading Dump to Cloud Storage...</>');
             $this->dbUploader->uploadDBDump($this->dbDumper->getAbsoluteDumpPath());
-            $output->writeln('<fg=cyan;options=bold>DB Dump successfully uploaded.</>');
+            $output->writeln("<info>Dump successfully updated.</info>");
         } catch (\Exception $e) {
             $output->writeln("<error>{$e->getMessage()}</error>");
         } finally {
             $output->writeln('<fg=cyan;options=bold>Cleaning up files...</>');
             $this->dbDumper->cleanUp();
-            $output->writeln('<fg=cyan;options=bold>Done</>');
+            $output->writeln("<info>Done.</info>");
         }
     }
 }
