@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Jh\StrippedDbProvider\Model;
 
+use Magento\Framework\App\DeploymentConfig;
+
 class DbTables
 {
-    const STRIP_TABLES = [
+    private $defaultStructureOnlyTables = [
         'admin_passwords',
         'admin_system_messages',
         'admin_user',
@@ -117,4 +119,21 @@ class DbTables
         'wishlist_item',
         'wishlist_item_option',
     ];
+
+    /**
+     * @var DeploymentConfig
+     */
+    private $deploymentConfig;
+
+    public function __construct(DeploymentConfig $deploymentConfig)
+    {
+        $this->deploymentConfig = $deploymentConfig;
+    }
+
+    public function getStructureOnlyTables(): array
+    {
+        $configPath = 'system/default/' . Config::XML_PATH_PROJECT_IGNORE_TABLES;
+        $projectIgnoredTables = $this->deploymentConfig->get($configPath, []);
+        return array_merge($this->defaultStructureOnlyTables, $projectIgnoredTables);
+    }
 }

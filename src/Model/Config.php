@@ -23,6 +23,11 @@ class Config
     const XML_PATH_SECRET_ACCESS_KEY = 'stripped_db_provider/storage/secret_access_key';
 
     /**
+     * Dump Specific
+     */
+    const XML_PATH_PROJECT_IGNORE_TABLES = 'stripped_db_provider/dump/project_ignore_tables';
+
+    /**
      * @var ScopeConfigInterface
      */
     private $config;

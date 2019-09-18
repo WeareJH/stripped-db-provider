@@ -34,8 +34,14 @@ class DbDumper
      */
     private $deploymentConfig;
 
+    /**
+     * @var DbTables
+     */
+    private $dbTables;
+
     public function __construct(
         Config $config,
+        DbTables $dbTables,
         PhpExecutableFinderFactory $phpFinderFactory,
         DeploymentConfig $deploymentConfig,
         Shell $shell
@@ -44,6 +50,7 @@ class DbDumper
         $this->config = $config;
         $this->phpFinder = $phpFinderFactory->create();
         $this->deploymentConfig = $deploymentConfig;
+        $this->dbTables = $dbTables;
     }
 
     /**
@@ -68,7 +75,7 @@ class DbDumper
             $this->getDbConfigData(ConfigOptionsListConstants::KEY_USER),
             $this->getDbConfigData(ConfigOptionsListConstants::KEY_PASSWORD),
             $this->getDbConfigData(ConfigOptionsListConstants::KEY_NAME),
-            $this->buildListOfIgnoredTables(true),
+            $this->buildListOfStructureOnlyTables(true),
             $this->rmDefinerCommand,
             $this->getAbsoluteDumpPath(false)
         );
@@ -86,7 +93,7 @@ class DbDumper
             $this->getDbConfigData(ConfigOptionsListConstants::KEY_USER),
             $this->getDbConfigData(ConfigOptionsListConstants::KEY_PASSWORD),
             $this->getDbConfigData(ConfigOptionsListConstants::KEY_NAME),
-            $this->buildListOfIgnoredTables(false),
+            $this->buildListOfStructureOnlyTables(false),
             $this->rmDefinerCommand,
             $this->getAbsoluteDumpPath(false)
         );
@@ -108,9 +115,9 @@ class DbDumper
      * @param bool $ignoreTableFlag
      * @return string
      */
-    private function buildListOfIgnoredTables(bool $ignoreTableFlag = false): string
+    private function buildListOfStructureOnlyTables(bool $ignoreTableFlag = false): string
     {
-        $tableNameList = DbTables::STRIP_TABLES;
+        $tableNameList = $this->dbTables->getStructureOnlyTables();
         if ($ignoreTableFlag) {
             $dbName = $this->getDbConfigData(ConfigOptionsListConstants::KEY_NAME);
             $tableNameList = array_map(function ($tableName) use ($dbName) {
@@ -119,7 +126,7 @@ class DbDumper
                     $dbName,
                     $tableName
                 );
-            }, DbTables::STRIP_TABLES);
+            }, $tableNameList);
         }
 
         return implode(" ", $tableNameList);

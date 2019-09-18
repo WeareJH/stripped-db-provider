@@ -29,6 +29,9 @@ Edit the env.php file manually and set the following config (values below are ex
                     'region' => 'example-bucket-region',
                     'access_key_id' => 'example-bucket-access-key',
                     'secret_access_key' => 'example-bucket-secret-access-key'
+                ],
+                'dump' => [
+                    'project_ignore_tables' => ['example_table_a', 'example_table_b']
                 ]
             ]
         ]
@@ -37,15 +40,16 @@ Edit the env.php file manually and set the following config (values below are ex
 
 Values are described in the following table:
 
-| config            | value                                                          |
-|-------------------|----------------------------------------------------------------|
-| enabled           | One of {0,1}                                                   |
-| project-name      | String. Unique name for the project (used to name the db dump) |
-| cron_expr         | A valid cron expression. Eg. "0 0/5 * * *"                     |
-| bucket_name       | String. AWS S3 Bucket name                                     |
-| region            | String. AWS S3 Bucket region                                   |
-| access_key_id     | String. AWS S3 Bucket access key id                            |
-| secret_access_key | String. AWS S3 Bucket secret access key                        |
+| config                | value                                                               |
+|-----------------------|---------------------------------------------------------------------|
+| enabled               | One of {0,1}                                                        |
+| project-name          | String. Unique name for the project (used to name the db dump)      |
+| cron_expr             | A valid cron expression. Eg. "0 0/5 * * *"                          |
+| bucket_name           | String. AWS S3 Bucket name                                          |
+| region                | String. AWS S3 Bucket region                                        |
+| access_key_id         | String. AWS S3 Bucket access key id                                 |
+| secret_access_key     | String. AWS S3 Bucket secret access key                             |
+| project_ignore_tables | Array of Strings. Project specific tables that should be stripped.  |
 
 The Amazon S3 Bucket Details should be in LastPass. Ask your fellow developers if you can't find it or need help setting up.
 
