@@ -19,9 +19,10 @@ There are two areas of configuration. The first is project specific config, whic
 
 All databases are stripped by default but you can define project specific tables whose data you wish to not be included in the dump by adding the following to your **config.php** file:
 
-```json
+```
 'system' => [
         'default' => [
+            'stripped_db_provider' => [
                 'dump' => [
                     'project_ignore_tables' => ['example_table_a', 'example_table_b']
                 ]
@@ -36,7 +37,7 @@ Where `project_ignore_tables` is a list of project specfic tables.
 
 Once Installed and deployed to production, you will want to configure it so that it automatically sends stripped DBs to the S3 Bucket.
 Edit the **env.php** file manually and set the following config (values below are examples):
-```json
+```
 'system' => [
         'default' => [
             'stripped_db_provider' => [
