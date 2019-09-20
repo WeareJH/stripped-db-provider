@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="default">
+        <job name="jh_stripped_db_backup" instance="Jh\StrippedDbProvider\Cron\UploadDbCron" method="execute">
+            <config_path>stripped_db_provider/general/cron_expr</config_path>
+        </job>
+    </group>
+</config>

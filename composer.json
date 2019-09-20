@@ -3,10 +3,10 @@
   "description": "Stripped DB Provider for Magento 2",
   "type": "magento2-module",
   "require": {
-    "php": "^7.2",
-    "magento/framework": "^102.0.0",
+    "php": "^7.1",
+    "magento/framework": "*",
     "magento/module-backend": "*",
-    "n98/magerun2": "^3.0.0"
+    "aws/aws-sdk-php": "^3.112.0"
   },
   "autoload": {
     "files": [
