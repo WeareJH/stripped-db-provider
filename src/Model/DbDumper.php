@@ -14,6 +14,7 @@ use Magento\Framework\Config\ConfigOptionsListConstants;
 class DbDumper
 {
     private $rmDefinerCommand = "LANG=C LC_CTYPE=C LC_ALL=C sed -e 's/DEFINER[ ]*=[ ]*[^*]*\*/\*/'";
+    private $rmPasswordWarning = "grep -v 'Warning: Using a password'";
     /**
      * @var Shell
      */
@@ -68,7 +69,7 @@ class DbDumper
      */
     private function buildDataDumpExcludingStrippedTablesCmd(): string
     {
-        $dumpCmd = "mysqldump --single-transaction --quick -h%s -u%s --password=%s %s %s | %s >> %s";
+        $dumpCmd = "mysqldump --single-transaction --quick -h%s -u%s --password=%s %s %s | %s | %s >> %s";
         return sprintf(
             $dumpCmd,
             $this->getDbConfigData(ConfigOptionsListConstants::KEY_HOST),
@@ -76,6 +77,7 @@ class DbDumper
             $this->getDbConfigData(ConfigOptionsListConstants::KEY_PASSWORD),
             $this->getDbConfigData(ConfigOptionsListConstants::KEY_NAME),
             $this->buildListOfStructureOnlyTables(true),
+            $this->rmPasswordWarning,
             $this->rmDefinerCommand,
             $this->getAbsoluteDumpPath(false)
         );
@@ -86,7 +88,7 @@ class DbDumper
      */
     private function buildStructureDumpForStrippedTablesCmd(): string
     {
-        $dumpCmd = "mysqldump --single-transaction --quick --no-data -h%s -u%s --password=%s %s %s | %s > %s";
+        $dumpCmd = "mysqldump --single-transaction --quick --no-data -h%s -u%s --password=%s %s %s | %s | %s > %s";
         return sprintf(
             $dumpCmd,
             $this->getDbConfigData(ConfigOptionsListConstants::KEY_HOST),
@@ -94,6 +96,7 @@ class DbDumper
             $this->getDbConfigData(ConfigOptionsListConstants::KEY_PASSWORD),
             $this->getDbConfigData(ConfigOptionsListConstants::KEY_NAME),
             $this->buildListOfStructureOnlyTables(false),
+            $this->rmPasswordWarning,
             $this->rmDefinerCommand,
             $this->getAbsoluteDumpPath(false)
         );
