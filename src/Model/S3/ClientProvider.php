@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-namespace Jh\StrippedDbProvider\Model;
+namespace Jh\StrippedDbProvider\Model\S3;
 
-use Aws\S3\MultipartUploader;
 use Aws\S3\S3Client;
 use Aws\Credentials\Credentials;
+use Jh\StrippedDbProvider\Model\Config;
 
-class DbUploader
+class ClientProvider
 {
-    /**
-     * @var S3Client
-     */
-    private $client;
-
     /**
      * @var Config
      */
     private $config;
+
+    /**
+     * @var S3Client
+     */
+    private $client;
 
     public function __construct(Config $config)
     {
@@ -26,23 +26,9 @@ class DbUploader
     }
 
     /**
-     * @param string $dumpAbsolutePath
-     * @return \Aws\ResultInterface
-     * @throws \RuntimeException
+     * @return S3Client
      */
-    public function uploadDBDump(string $dumpAbsolutePath)
-    {
-        $client = $this->getS3Client();
-
-        $uploader = new MultipartUploader($client, $dumpAbsolutePath, [
-            'bucket' => $this->config->getBucketName(),
-            'key' => 'stripped-db-backups/' . basename($dumpAbsolutePath)
-        ]);
-
-        return $uploader->upload();
-    }
-
-    private function getS3Client(): S3Client
+    public function getClient(): S3Client
     {
         if (is_null($this->client)) {
             $credentials = new Credentials(
@@ -59,4 +45,6 @@ class DbUploader
 
         return $this->client;
     }
+
+
 }

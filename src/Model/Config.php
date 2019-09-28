@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Jh\StrippedDbProvider\Model;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\DeploymentConfig;
+use Magento\Framework\Config\ConfigOptionsListConstants;
 
 class Config
 {
@@ -32,9 +34,17 @@ class Config
      */
     private $config;
 
-    public function __construct(ScopeConfigInterface $config)
-    {
+    /**
+     * @var DeploymentConfig
+     */
+    private $deploymentConfig;
+
+    public function __construct(
+        ScopeConfigInterface $config,
+        DeploymentConfig $deploymentConfig
+    ) {
         $this->config = $config;
+        $this->deploymentConfig = $deploymentConfig;
     }
 
     public function isEnabled(): bool
@@ -42,9 +52,11 @@ class Config
         return (bool) $this->config->isSetFlag(self::XML_PATH_ENABLED);
     }
 
-    public function getProjectName(): string
+    public function getProjectMeta(): ProjectMeta
     {
-        return (string) $this->config->getValue(self::XML_PATH_PROJECT_NAME);
+        return new ProjectMeta(
+            (string) $this->config->getValue(self::XML_PATH_PROJECT_NAME)
+        );
     }
 
     public function getBucketRegion(): string
@@ -65,5 +77,16 @@ class Config
     public function getSecretAccessKey(): string
     {
         return (string) $this->config->getValue(self::XML_PATH_SECRET_ACCESS_KEY);
+    }
+
+    public function getLocalDbConfigData(string $key): ?string
+    {
+        return $this->deploymentConfig->get(
+            sprintf(
+                "%s/%s",
+                ConfigOptionsListConstants::CONFIG_PATH_DB_CONNECTION_DEFAULT,
+                $key
+            )
+        );
     }
 }

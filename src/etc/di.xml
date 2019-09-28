@@ -3,7 +3,8 @@
     <type name="Magento\Framework\Console\CommandListInterface">
         <arguments>
             <argument name="commands" xsi:type="array">
-                <item name="UploadDbCommand" xsi:type="object">Jh\StrippedDbProvider\Console\UploadDbCommand</item>
+                <item name="UploadToRemoteCommand" xsi:type="object">Jh\StrippedDbProvider\Console\UploadToRemoteCommand</item>
+                <item name="ImportFromRemoteCommand" xsi:type="object">Jh\StrippedDbProvider\Console\ImportFromRemoteCommand</item>
             </argument>
         </arguments>
     </type>
