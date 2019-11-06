@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Jh\StrippedDbProvider\Model;
 
 use Magento\Framework\App\DeploymentConfig;
+use Magento\Framework\App\ResourceConnection;
 
 class DbTables
 {
@@ -125,15 +126,29 @@ class DbTables
      */
     private $deploymentConfig;
 
-    public function __construct(DeploymentConfig $deploymentConfig)
+    /**
+     * @var ResourceConnection
+     */
+    private $resourceConnection;
+
+    public function __construct(DeploymentConfig $deploymentConfig, ResourceConnection $resourceConnection)
     {
         $this->deploymentConfig = $deploymentConfig;
+        $this->resourceConnection = $resourceConnection;
     }
 
     public function getStructureOnlyTables(): array
     {
         $configPath = 'system/default/' . Config::XML_PATH_PROJECT_IGNORE_TABLES;
         $projectIgnoredTables = $this->deploymentConfig->get($configPath, []);
-        return array_merge($this->defaultStructureOnlyTables, $projectIgnoredTables);
+        $tables = array_merge($this->defaultStructureOnlyTables, $projectIgnoredTables);
+
+        $connection = $this->resourceConnection->getConnection();
+        foreach ($tables as $idx => $table) {
+            if ($connection->isTableExists($table) === false) {
+                unset($tables[$idx]);
+            }
+        }
+        return $tables;
     }
 }
