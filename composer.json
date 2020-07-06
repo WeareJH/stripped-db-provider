@@ -2,11 +2,16 @@
   "name": "wearejh/stripped-db-provider",
   "description": "Stripped DB Provider for Magento 2",
   "type": "magento2-module",
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "git@github.com:dcabrejas/mysqldump-php.git"
+    }
+  ],
   "require": {
     "php": "^7.1",
-    "magento/framework": "*",
-    "magento/module-backend": "*",
-    "aws/aws-sdk-php": "^3.112.0"
+    "aws/aws-sdk-php": "^3.112.0",
+    "ifsnop/mysqldump-php": "dev-allow-select-empty-set@dev"
   },
   "autoload": {
     "files": [
