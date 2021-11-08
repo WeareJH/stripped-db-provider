@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Jh\StrippedDbProvider\Model;
+namespace Jh\StrippedDbProvider\Model\Db;
 
 use Magento\Framework\App\DeploymentConfig;
 use Magento\Framework\App\ResourceConnection;
+use Jh\StrippedDbProvider\Model\Config;
 
 class DbTables
 {

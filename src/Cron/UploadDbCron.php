@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Jh\StrippedDbProvider\Cron;
 
 use Jh\StrippedDbProvider\Model\Config;
-use Jh\StrippedDbProvider\Model\DbDumper;
-use Jh\StrippedDbProvider\Model\DbUploader;
+use Jh\StrippedDbProvider\Model\DbFacade;
 use Psr\Log\LoggerInterface;
 
 class UploadDbCron
@@ -17,31 +16,23 @@ class UploadDbCron
     private $config;
 
     /**
-     * @var DbDumper
-     */
-    private $dbDumper;
-
-    /**
-     * @var DbUploader
-     */
-    private $dbUploader;
-
-    /**
      * @var LoggerInterface
      */
     private $logger;
 
+    /**
+     * @var DbFacade
+     */
+    private $dbFacade;
+
     public function __construct(
         Config $config,
-        DbDumper $dbDumper,
-        DbUploader $dbUploader,
+        DbFacade $dbFacade,
         LoggerInterface $logger
     ) {
-
         $this->config = $config;
-        $this->dbDumper = $dbDumper;
-        $this->dbUploader = $dbUploader;
         $this->logger = $logger;
+        $this->dbFacade = $dbFacade;
     }
 
     /**
@@ -54,12 +45,16 @@ class UploadDbCron
         }
 
         try {
-            $this->dbDumper->dumpDb();
-            $this->dbUploader->uploadDBDump($this->dbDumper->getAbsoluteDumpPath());
+            $projectMeta = $this->config->getProjectMeta();
+            $this->dbFacade->dumpDatabase($projectMeta);
+            $this->dbFacade->compressDatabaseDump($projectMeta);
+            $this->dbFacade->uploadDatabaseDump($projectMeta);
         } catch (\Exception $e) {
             $this->logger->critical($e);
         } finally {
-            $this->dbDumper->cleanUp();
+            if (isset($projectMeta)) {
+                $this->dbFacade->cleanUpLocalDumpFiles($projectMeta);
+            }
         }
     }
 }
