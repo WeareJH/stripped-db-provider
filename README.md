@@ -4,11 +4,16 @@ This module can be configured to automatically send stripped databases periodica
 
 ## Installation
 
-Install like any regular composer package
+Add the following repositories to the `repositories` section of your `composer.json`
+
+```
+{"type": "vcs", "url": "git@github.com:WeareJH/stripped-db-provider.git"},
+{"type": "vcs", "url":  "git@github.com:maciejslawik/mysqldump-php.git"}
+```
+
+Then install like any regular composer package
 ```bash
-composer config repositories.stripped-db-provider  vcs git@github.com:WeareJH/stripped-db-provider.git
 composer require wearejh/stripped-db-provider
-composer update wearejh/stripped-db-provider
 ```
 
 ## Configuration
