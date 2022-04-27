@@ -9,7 +9,7 @@
     }
   ],
   "require": {
-    "php": "^7.1",
+    "php": "^7.1 || ^8.1.0",
     "aws/aws-sdk-php": "^3.112.0",
     "ifsnop/mysqldump-php": ">=3.0"
   },
