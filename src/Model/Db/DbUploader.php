@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Jh\StrippedDbProvider\Model\Db;
 
+use Aws\ResultInterface;
 use Aws\S3\MultipartUploader;
 use Jh\StrippedDbProvider\Model\S3\ClientProvider;
 use Jh\StrippedDbProvider\Model\Config;
@@ -11,27 +12,15 @@ use Jh\StrippedDbProvider\Model\ProjectMeta;
 
 class DbUploader
 {
-    /**
-     * @var Config
-     */
-    private $config;
-
-    /**
-     * @var ClientProvider
-     */
-    private $clientProvider;
-
-    public function __construct(ClientProvider $clientProvider, Config $config)
+    public function __construct(private ClientProvider $clientProvider, private Config $config)
     {
-        $this->config = $config;
-        $this->clientProvider = $clientProvider;
     }
 
     /**
      * @param ProjectMeta $projectMeta
-     * @return \Aws\ResultInterface
+     * @return ResultInterface
      */
-    public function uploadDBDump(ProjectMeta $projectMeta)
+    public function uploadDBDump(ProjectMeta $projectMeta): ResultInterface
     {
         $client = $this->clientProvider->getClient();
 

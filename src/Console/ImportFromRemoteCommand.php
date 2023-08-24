@@ -15,17 +15,11 @@ class ImportFromRemoteCommand extends Command
 {
     const ARGUMENT_PROJECT_NAME = 'source-project-name';
 
-    /**
-     * @var DbFacade
-     */
-    private $dbFacade;
-
     public function __construct(
-        DbFacade $dbFacade,
+        private DbFacade $dbFacade,
         string $name = null
     ) {
         parent::__construct($name);
-        $this->dbFacade = $dbFacade;
     }
 
     /**
@@ -45,7 +39,7 @@ class ImportFromRemoteCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         try {
             $sourceProjectMeta = new ProjectMeta($input->getArgument(self::ARGUMENT_PROJECT_NAME));
@@ -67,5 +61,6 @@ class ImportFromRemoteCommand extends Command
                 $this->dbFacade->cleanUpLocalDumpFiles($sourceProjectMeta);
             }
         }
+        return 0;
     }
 }
