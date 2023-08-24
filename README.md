@@ -87,7 +87,7 @@ bin/magento app:config:import
 You can also manually trigger the stripped database upload from the command line by running the following command : 
 
 ```
-bin/magento wearejh:db:backup-stripped-db 
+bin/magento wearejh:stripped-db-provider:upload-to-remote 
 ```
 
 ## Issues / Feature Request
