@@ -9,23 +9,11 @@ use Magento\Framework\Shell;
 
 class DbCleaner
 {
-    /**
-     * @var Shell
-     */
-    private $shell;
-
-    public function __construct(Shell $shell)
+    public function __construct(private Shell $shell)
     {
-        $this->shell = $shell;
     }
 
-    /**
-     * Attempt to silently remove the database dumps
-     *
-     * @param ProjectMeta $projectMeta
-     * @return string
-     */
-    public function cleanUp(ProjectMeta $projectMeta)
+    public function cleanUp(ProjectMeta $projectMeta): void
     {
         try {
             $this->shell->execute("rm %s", [$projectMeta->getLocalAbsoluteFileDumpPath()]);

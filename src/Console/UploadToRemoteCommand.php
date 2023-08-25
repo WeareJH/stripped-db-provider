@@ -12,21 +12,11 @@ use Jh\StrippedDbProvider\Model\Config;
 
 class UploadToRemoteCommand extends Command
 {
-    /**
-     * @var DbFacade
-     */
-    private $dbFacade;
+    private const OPTION_FULL_DUMP = 'full';
 
-    /**
-     * @var Config
-     */
-    private $config;
-
-    public function __construct(DbFacade $dbFacade, Config $config, string $name = null)
+    public function __construct(private DbFacade $dbFacade, private Config $config, string $name = null)
     {
         parent::__construct($name);
-        $this->dbFacade = $dbFacade;
-        $this->config = $config;
     }
 
     /**
@@ -36,17 +26,19 @@ class UploadToRemoteCommand extends Command
     {
         $this->setName('wearejh:stripped-db-provider:upload-to-remote');
         $this->setDescription("Upload a stripped DB dump to JH's Cloud Storage");
+        $this->addOption(self::OPTION_FULL_DUMP);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         try {
+            $fullDump =  (bool) $input->getOption(self::OPTION_FULL_DUMP);
             $projectMeta = $this->config->getProjectMeta();
             $output->writeln('<fg=cyan;options=bold>Dumping Database...</>');
-            $this->dbFacade->dumpDatabase($projectMeta);
+            $this->dbFacade->dumpDatabase($projectMeta, $fullDump);
             $output->writeln("<info>Dump created at {$projectMeta->getLocalAbsoluteFileDumpPath()}</info>");
             $output->writeln('<fg=cyan;options=bold>Compressing Dump...</>');
             $this->dbFacade->compressDatabaseDump($projectMeta);
@@ -60,5 +52,6 @@ class UploadToRemoteCommand extends Command
                 $this->dbFacade->cleanUpLocalDumpFiles($projectMeta);
             }
         }
+        return 0;
     }
 }

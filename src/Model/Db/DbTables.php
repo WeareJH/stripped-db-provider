@@ -132,20 +132,10 @@ class DbTables
         'wishlist_item_option',
     ];
 
-    /**
-     * @var DeploymentConfig
-     */
-    private $deploymentConfig;
-
-    /**
-     * @var ResourceConnection
-     */
-    private $resourceConnection;
-
-    public function __construct(DeploymentConfig $deploymentConfig, ResourceConnection $resourceConnection)
-    {
-        $this->deploymentConfig = $deploymentConfig;
-        $this->resourceConnection = $resourceConnection;
+    public function __construct(
+        private DeploymentConfig $deploymentConfig,
+        private ResourceConnection $resourceConnection
+    ) {
     }
 
     public function getStructureOnlyTables(): array

@@ -13,38 +13,26 @@ class Config
     /**
      * General Config
      */
-    const XML_PATH_ENABLED = 'stripped_db_provider/general/enabled';
-    const XML_PATH_PROJECT_NAME = 'stripped_db_provider/general/project_name';
+    private const XML_PATH_ENABLED = 'stripped_db_provider/general/enabled';
+    private const XML_PATH_PROJECT_NAME = 'stripped_db_provider/general/project_name';
 
     /**
      * Amazon S3 Bucket Settings
      */
-    const XML_PATH_BUCKET_NAME = 'stripped_db_provider/storage/bucket_name';
-    const XML_PATH_BUCKET_REGION = 'stripped_db_provider/storage/region';
-    const XML_PATH_ACCESS_KEY_ID = 'stripped_db_provider/storage/access_key_id';
-    const XML_PATH_SECRET_ACCESS_KEY = 'stripped_db_provider/storage/secret_access_key';
+    private const XML_PATH_BUCKET_NAME = 'stripped_db_provider/storage/bucket_name';
+    private const XML_PATH_BUCKET_REGION = 'stripped_db_provider/storage/region';
+    private const XML_PATH_ACCESS_KEY_ID = 'stripped_db_provider/storage/access_key_id';
+    private const XML_PATH_SECRET_ACCESS_KEY = 'stripped_db_provider/storage/secret_access_key';
 
     /**
      * Dump Specific
      */
     const XML_PATH_PROJECT_IGNORE_TABLES = 'stripped_db_provider/dump/project_ignore_tables';
 
-    /**
-     * @var ScopeConfigInterface
-     */
-    private $config;
-
-    /**
-     * @var DeploymentConfig
-     */
-    private $deploymentConfig;
-
     public function __construct(
-        ScopeConfigInterface $config,
-        DeploymentConfig $deploymentConfig
+        private ScopeConfigInterface $config,
+        private DeploymentConfig $deploymentConfig
     ) {
-        $this->config = $config;
-        $this->deploymentConfig = $deploymentConfig;
     }
 
     public function isEnabled(): bool

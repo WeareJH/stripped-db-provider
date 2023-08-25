@@ -10,21 +10,15 @@ use Magento\Framework\Exception\LocalizedException;
 
 class DbCompresser
 {
-    /**
-     * @var Shell
-     */
-    private $shell;
-
-    public function __construct(Shell $shell)
+    public function __construct(private Shell $shell)
     {
-        $this->shell = $shell;
     }
 
     /**
      * @param ProjectMeta $projectMeta
      * @throws LocalizedException
      */
-    public function compressDump(ProjectMeta $projectMeta)
+    public function compressDump(ProjectMeta $projectMeta): void
     {
         $this->shell->execute(
             sprintf(
@@ -39,7 +33,7 @@ class DbCompresser
      * @param ProjectMeta $projectMeta
      * @throws LocalizedException
      */
-    public function uncompressDump(ProjectMeta $projectMeta)
+    public function uncompressDump(ProjectMeta $projectMeta): void
     {
         $this->shell->execute(
             sprintf(

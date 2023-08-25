@@ -16,15 +16,9 @@ class ProjectMeta
      */
     private $remoteStoragePath = 'stripped-db-backups/';
 
-    /**
-     * @var string
-     */
-    private $name;
-
-    public function __construct(string $name)
+    public function __construct(private string $name)
     {
         $this->validateName($name);
-        $this->name = $name;
     }
 
     /**

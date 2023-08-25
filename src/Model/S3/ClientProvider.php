@@ -11,18 +11,12 @@ use Jh\StrippedDbProvider\Model\Config;
 class ClientProvider
 {
     /**
-     * @var Config
-     */
-    private $config;
-
-    /**
      * @var S3Client
      */
     private $client;
 
-    public function __construct(Config $config)
+    public function __construct(private Config $config)
     {
-        $this->config = $config;
     }
 
     /**

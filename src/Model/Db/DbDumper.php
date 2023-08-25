@@ -39,9 +39,10 @@ class DbDumper
 
     /**
      * @param ProjectMeta $projectMeta
+     * @param bool $fullDump
      * @throws \Exception
      */
-    public function dumpDb(ProjectMeta $projectMeta): void
+    public function dumpDb(ProjectMeta $projectMeta, bool $fullDump): void
     {
         $hostName = $this->config->getLocalDbConfigData(ConfigOptionsListConstants::KEY_HOST);
         $dbName   = $this->config->getLocalDbConfigData(ConfigOptionsListConstants::KEY_NAME);
@@ -52,7 +53,9 @@ class DbDumper
             ['skip-definer' => true]
         );
 
-        $dumper->setTableLimits($this->getTableLimits());
+        if (!$fullDump) {
+            $dumper->setTableLimits($this->getTableLimits());
+        }
         $dumper->start($projectMeta->getLocalAbsoluteFileDumpPath());
     }
 

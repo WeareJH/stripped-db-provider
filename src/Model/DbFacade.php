@@ -8,65 +8,30 @@ use Jh\StrippedDbProvider\Model\Db;
 
 class DbFacade
 {
-    /**
-     * @var Db\DbDumper
-     */
-    private $dumper;
-
-    /**
-     * @var Db\DbCompresser
-     */
-    private $compresser;
-
-    /**
-     * @var Db\DbDownloader
-     */
-    private $downloader;
-
-    /**
-     * @var Db\DbUploader
-     */
-    private $uploader;
-
-    /**
-     * @var Db\DbCleaner
-     */
-    private $cleaner;
-
-    /**
-     * @var Db\DbImporter
-     */
-    private $importer;
-
     public function __construct(
-        Db\DbDumper $dumper,
-        Db\DbCompresser $compresser,
-        Db\DbDownloader $downloader,
-        Db\DbUploader $uploader,
-        Db\DbImporter $importer,
-        Db\DbCleaner $cleaner
+        private Db\DbDumper $dumper,
+        private Db\DbCompresser $compresser,
+        private Db\DbDownloader $downloader,
+        private Db\DbUploader $uploader,
+        private Db\DbImporter $importer,
+        private Db\DbCleaner $cleaner
     ) {
-        $this->dumper = $dumper;
-        $this->compresser = $compresser;
-        $this->downloader = $downloader;
-        $this->uploader = $uploader;
-        $this->cleaner = $cleaner;
-        $this->importer = $importer;
     }
 
     /**
      * @param ProjectMeta $projectMeta
+     * @param bool $fullDump
      * @throws \Exception
      */
-    public function dumpDatabase(ProjectMeta $projectMeta)
+    public function dumpDatabase(ProjectMeta $projectMeta, bool $fullDump): void
     {
-        $this->dumper->dumpDb($projectMeta);
+        $this->dumper->dumpDb($projectMeta, $fullDump);
     }
 
     /**
      * @param ProjectMeta $projectMeta
      */
-    public function downloadDatabaseDump(ProjectMeta $projectMeta)
+    public function downloadDatabaseDump(ProjectMeta $projectMeta): void
     {
         $this->downloader->downloadDBDump($projectMeta);
     }
@@ -75,7 +40,7 @@ class DbFacade
      * @param ProjectMeta $projectMeta
      * @throws \Exception
      */
-    public function compressDatabaseDump(ProjectMeta $projectMeta)
+    public function compressDatabaseDump(ProjectMeta $projectMeta): void
     {
         $this->compresser->compressDump($projectMeta);
     }
@@ -84,7 +49,7 @@ class DbFacade
      * @param ProjectMeta $projectMeta
      * @throws \Exception
      */
-    public function uncompressDatabaseDump(ProjectMeta $projectMeta)
+    public function uncompressDatabaseDump(ProjectMeta $projectMeta): void
     {
         $this->compresser->uncompressDump($projectMeta);
     }
@@ -93,7 +58,7 @@ class DbFacade
      * @param ProjectMeta $projectMeta
      * @throws \Exception
      */
-    public function importDatabaseDump(ProjectMeta $projectMeta)
+    public function importDatabaseDump(ProjectMeta $projectMeta): void
     {
         $this->importer->importDatabase($projectMeta);
     }
@@ -101,7 +66,7 @@ class DbFacade
     /**
      * @param ProjectMeta $projectMeta
      */
-    public function cleanUpLocalDumpFiles(ProjectMeta $projectMeta)
+    public function cleanUpLocalDumpFiles(ProjectMeta $projectMeta): void
     {
         $this->cleaner->cleanUp($projectMeta);
     }
@@ -109,7 +74,7 @@ class DbFacade
     /**
      * @param ProjectMeta $projectMeta
      */
-    public function uploadDatabaseDump(ProjectMeta $projectMeta)
+    public function uploadDatabaseDump(ProjectMeta $projectMeta): void
     {
         $this->uploader->uploadDBDump($projectMeta);
     }

@@ -11,22 +11,10 @@ use Jh\StrippedDbProvider\Model\ProjectMeta;
 
 class DbImporter
 {
-    /**
-     * @var Shell
-     */
-    private $shell;
-
-    /**
-     * @var Config
-     */
-    private $config;
-
     public function __construct(
-        Config $config,
-        Shell $shell
+        private Config $config,
+        private Shell $shell
     ) {
-        $this->shell = $shell;
-        $this->config = $config;
     }
 
     /**

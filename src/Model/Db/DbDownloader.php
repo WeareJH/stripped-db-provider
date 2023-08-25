@@ -11,26 +11,14 @@ use GuzzleHttp\Psr7\Stream;
 
 class DbDownloader
 {
-    /**
-     * @var Config
-     */
-    private $config;
-
-    /**
-     * @var ClientProvider
-     */
-    private $clientProvider;
-
-    public function __construct(ClientProvider $clientProvider, Config $config)
+    public function __construct(private ClientProvider $clientProvider, private Config $config)
     {
-        $this->config = $config;
-        $this->clientProvider = $clientProvider;
     }
 
     /**
      * @param ProjectMeta $projectMeta
      */
-    public function downloadDBDump(ProjectMeta $projectMeta)
+    public function downloadDBDump(ProjectMeta $projectMeta): void
     {
         $client = $this->clientProvider->getClient();
         $bucketName = $this->config->getBucketName();

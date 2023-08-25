@@ -8,7 +8,6 @@ Add the following repositories to the `repositories` section of your `composer.j
 
 ```
 {"type": "vcs", "url": "git@github.com:WeareJH/stripped-db-provider.git"},
-{"type": "vcs", "url":  "git@github.com:maciejslawik/mysqldump-php.git"}
 ```
 
 Then install like any regular composer package
@@ -88,6 +87,12 @@ You can also manually trigger the stripped database upload from the command line
 
 ```
 bin/magento wearejh:stripped-db-provider:upload-to-remote 
+```
+
+To do a full DB dump
+
+```
+bin/magento wearejh:stripped-db-provider:upload-to-remote --full
 ```
 
 ## Issues / Feature Request
