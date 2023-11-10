@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Jh\StrippedDbProvider\Model\Db;
 
-use Magento\Framework\Shell;
+use Ifsnop\Mysqldump\Mysqldump;
 use Magento\Framework\Config\ConfigOptionsListConstants;
 use Jh\StrippedDbProvider\Model\Config;
 use Jh\StrippedDbProvider\Model\ProjectMeta;
@@ -12,8 +12,7 @@ use Jh\StrippedDbProvider\Model\ProjectMeta;
 class DbImporter
 {
     public function __construct(
-        private Config $config,
-        private Shell $shell
+        private Config $config
     ) {
     }
 
@@ -23,15 +22,14 @@ class DbImporter
      */
     public function importDatabase(ProjectMeta $projectMeta): void
     {
-        $cmd = sprintf(
-            "mysql -h%s -u%s --password=%s %s < %s",
-            $this->config->getLocalDbConfigData(ConfigOptionsListConstants::KEY_HOST),
+        $hostName = $this->config->getLocalDbConfigData(ConfigOptionsListConstants::KEY_HOST);
+        $dbName   = $this->config->getLocalDbConfigData(ConfigOptionsListConstants::KEY_NAME);
+        $dumper = new Mysqldump(
+            "mysql:host={$hostName};dbname={$dbName}",
             $this->config->getLocalDbConfigData(ConfigOptionsListConstants::KEY_USER),
             $this->config->getLocalDbConfigData(ConfigOptionsListConstants::KEY_PASSWORD),
-            $this->config->getLocalDbConfigData(ConfigOptionsListConstants::KEY_NAME),
-            $projectMeta->getLocalAbsoluteFileDumpPath()
+            ['skip-definer' => true]
         );
-
-        $this->shell->execute($cmd);
+        $dumper->restore($projectMeta->getLocalAbsoluteFileDumpPath());
     }
 }

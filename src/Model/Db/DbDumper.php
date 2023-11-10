@@ -50,7 +50,7 @@ class DbDumper
             "mysql:host={$hostName};dbname={$dbName}",
             $this->config->getLocalDbConfigData(ConfigOptionsListConstants::KEY_USER),
             $this->config->getLocalDbConfigData(ConfigOptionsListConstants::KEY_PASSWORD),
-            ['skip-definer' => true]
+            ['skip-definer' => true, 'add-drop-table' => true, 'skip-triggers' => true]
         );
 
         if (!$fullDump) {

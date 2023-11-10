@@ -81,7 +81,7 @@ After you have edited the env.php file, run the following command immediately :
 bin/magento app:config:import
 ``` 
 
-## Manual Run
+## Run upload manually
 
 You can also manually trigger the stripped database upload from the command line by running the following command : 
 
@@ -93,6 +93,21 @@ To do a full DB dump
 
 ```
 bin/magento wearejh:stripped-db-provider:upload-to-remote --full
+```
+
+## Import a remote dump locally
+
+You can use the module to import a dump from S3 directly to your local. It will back up your local admin accounts and 
+reimport them
+
+```
+bin/magento wearejh:stripped-db-provider:wearejh:stripped-db-provider:import-from-remote PROJECT NAME 
+```
+
+To skip admin accounts backup
+
+```
+bin/magento wearejh:stripped-db-provider:wearejh:stripped-db-provider:import-from-remote PROJECT NAME --no-admin-backup=1
 ```
 
 ## Issues / Feature Request
