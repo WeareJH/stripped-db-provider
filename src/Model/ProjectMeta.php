@@ -58,4 +58,9 @@ class ProjectMeta
     {
         return $this->remoteStoragePath . $this->getCompressedDumpFileName();
     }
+
+    public function getLocalDumpStoragePath(): string
+    {
+        return $this->localStoragePath;
+    }
 }

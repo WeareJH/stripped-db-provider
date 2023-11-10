@@ -14,13 +14,12 @@ class DbFacade
         private Db\DbDownloader $downloader,
         private Db\DbUploader $uploader,
         private Db\DbImporter $importer,
-        private Db\DbCleaner $cleaner
+        private Db\DbCleaner $cleaner,
+        private Db\DbAdminAccountsManager $adminAccountsManager
     ) {
     }
 
     /**
-     * @param ProjectMeta $projectMeta
-     * @param bool $fullDump
      * @throws \Exception
      */
     public function dumpDatabase(ProjectMeta $projectMeta, bool $fullDump): void
@@ -37,7 +36,6 @@ class DbFacade
     }
 
     /**
-     * @param ProjectMeta $projectMeta
      * @throws \Exception
      */
     public function compressDatabaseDump(ProjectMeta $projectMeta): void
@@ -46,7 +44,6 @@ class DbFacade
     }
 
     /**
-     * @param ProjectMeta $projectMeta
      * @throws \Exception
      */
     public function uncompressDatabaseDump(ProjectMeta $projectMeta): void
@@ -55,7 +52,6 @@ class DbFacade
     }
 
     /**
-     * @param ProjectMeta $projectMeta
      * @throws \Exception
      */
     public function importDatabaseDump(ProjectMeta $projectMeta): void
@@ -63,19 +59,28 @@ class DbFacade
         $this->importer->importDatabase($projectMeta);
     }
 
-    /**
-     * @param ProjectMeta $projectMeta
-     */
     public function cleanUpLocalDumpFiles(ProjectMeta $projectMeta): void
     {
         $this->cleaner->cleanUp($projectMeta);
     }
 
-    /**
-     * @param ProjectMeta $projectMeta
-     */
     public function uploadDatabaseDump(ProjectMeta $projectMeta): void
     {
         $this->uploader->uploadDBDump($projectMeta);
+    }
+
+    public function backupLocalAdminAccounts(ProjectMeta $projectMeta): void
+    {
+        $this->adminAccountsManager->backupAdminAccounts($projectMeta);
+    }
+
+    public function restoreLocalAdminAccountsFromBackup(ProjectMeta $projectMeta): void
+    {
+        $this->adminAccountsManager->restoreAdminAccountsBackup($projectMeta);
+    }
+
+    public function cleanUpAdminAccountsBackup(ProjectMeta $projectMeta): void
+    {
+        $this->adminAccountsManager->cleanUp($projectMeta);
     }
 }
