@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace Jh\StrippedDbProvider\Console;
 
+use Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Jh\StrippedDbProvider\Model\DbFacade;
 use Jh\StrippedDbProvider\Model\ProjectMeta;
 
@@ -50,6 +52,17 @@ class ImportFromRemoteCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $helper = $this->getHelper('question');
+        $question = new ConfirmationQuestion(
+            'Are you sure you want to import database from S3? It will override current environment database [yes/no]',
+            false,
+            '/^yes/i'
+        );
+
+        if (!$helper->ask($input, $output, $question)) {
+            return Command::SUCCESS;
+        }
+
         try {
             $sourceProjectMeta = new ProjectMeta($input->getArgument(self::ARGUMENT_PROJECT_NAME));
             $backupAdminAccounts = !$input->getOption(self::OPTION_NO_ADMIN_ACCOUNT_BACKUP);
@@ -77,7 +90,7 @@ class ImportFromRemoteCommand extends Command
                 $output->writeln('<fg=cyan;options=bold>Restoring local admin accounts ...</>');
                 $this->dbFacade->restoreLocalAdminAccountsFromBackup($sourceProjectMeta);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $output->writeln("<error>{$e->getMessage()}</error>");
         } finally {
             if (isset($sourceProjectMeta)) {
@@ -87,6 +100,7 @@ class ImportFromRemoteCommand extends Command
                 $this->dbFacade->cleanUpAdminAccountsBackup($sourceProjectMeta);
             }
         }
-        return 0;
+
+        return Command::SUCCESS;
     }
 }
