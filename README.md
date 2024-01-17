@@ -101,13 +101,13 @@ You can use the module to import a dump from S3 directly to your local. It will 
 reimport them
 
 ```
-bin/magento wearejh:stripped-db-provider:wearejh:stripped-db-provider:import-from-remote PROJECT NAME 
+bin/magento wearejh:stripped-db-provider:import-from-remote PROJECT NAME 
 ```
 
 To skip admin accounts backup
 
 ```
-bin/magento wearejh:stripped-db-provider:wearejh:stripped-db-provider:import-from-remote PROJECT NAME --no-admin-backup=1
+bin/magento wearejh:stripped-db-provider:import-from-remote PROJECT NAME --no-admin-backup=1
 ```
 
 ## Issues / Feature Request
