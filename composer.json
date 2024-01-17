@@ -3,7 +3,7 @@
   "description": "Stripped DB Provider for Magento 2",
   "type": "magento2-module",
   "require": {
-    "php": ">=8.2.0",
+    "php": ">=8.1.0",
     "aws/aws-sdk-php": "^3.112.0",
     "ifsnop/mysqldump-php": "^2.12"
   },
