@@ -42,7 +42,7 @@ class DbDumper
      * @param bool $fullDump
      * @throws \Exception
      */
-    public function dumpDb(ProjectMeta $projectMeta, bool $fullDump): void
+    public function dumpDb(ProjectMeta $projectMeta, bool $fullDump = false): void
     {
         $hostName = $this->config->getLocalDbConfigData(ConfigOptionsListConstants::KEY_HOST);
         $dbName   = $this->config->getLocalDbConfigData(ConfigOptionsListConstants::KEY_NAME);
