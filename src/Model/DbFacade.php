@@ -22,7 +22,7 @@ class DbFacade
     /**
      * @throws \Exception
      */
-    public function dumpDatabase(ProjectMeta $projectMeta, bool $fullDump): void
+    public function dumpDatabase(ProjectMeta $projectMeta, bool $fullDump = false): void
     {
         $this->dumper->dumpDb($projectMeta, $fullDump);
     }
