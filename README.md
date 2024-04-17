@@ -113,3 +113,11 @@ bin/magento wearejh:stripped-db-provider:import-from-remote PROJECT NAME --no-ad
 ## Issues / Feature Request
 
 Please open github issues for any issues you encounter or feature requests you want to see. PRs are of course welcomed.
+
+## Troubleshooting
+
+If any project has 0.3.3 version installed of this module, getting a dependency error related to module: ifsnop/mysqldump-php ^2.12 while upgrading module to latest version then remove the below line from composer.json file of project root folder:
+        {
+           "type": "vcs",
+           "url": "git@github.com:maciejslawik/mysqldump-php.git"
+         }
