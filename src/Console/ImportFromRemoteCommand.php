@@ -19,6 +19,8 @@ class ImportFromRemoteCommand extends Command
     private const ARGUMENT_PROJECT_NAME = 'source-project-name';
     private const OPTION_NO_ADMIN_ACCOUNT_BACKUP = 'no-admin-backup';
 
+    private const SUCCESS = 1;
+
     public function __construct(
         private DbFacade $dbFacade,
         string $name = null
@@ -60,7 +62,7 @@ class ImportFromRemoteCommand extends Command
         );
 
         if (!$helper->ask($input, $output, $question)) {
-            return Command::SUCCESS;
+            return self::SUCCESS;
         }
 
         try {
@@ -101,6 +103,6 @@ class ImportFromRemoteCommand extends Command
             }
         }
 
-        return Command::SUCCESS;
+        return self::SUCCESS;
     }
 }
