@@ -54,7 +54,8 @@ Edit the **env.php** file manually and set the following config (values below ar
                     'bucket_name' => 'example-bucket-name',
                     'region' => 'example-bucket-region',
                     'access_key_id' => 'example-bucket-access-key',
-                    'secret_access_key' => 'example-bucket-secret-access-key'
+                    'secret_access_key' => 'example-bucket-secret-access-key',
+                    'using_encrypted_values_for_s3_config' => false
                 ]
             ]
         ]

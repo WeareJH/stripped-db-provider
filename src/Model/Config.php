@@ -7,6 +7,7 @@ namespace Jh\StrippedDbProvider\Model;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\DeploymentConfig;
 use Magento\Framework\Config\ConfigOptionsListConstants;
+use Magento\Framework\Encryption\EncryptorInterface;
 
 class Config
 {
@@ -23,6 +24,7 @@ class Config
     private const XML_PATH_BUCKET_REGION = 'stripped_db_provider/storage/region';
     private const XML_PATH_ACCESS_KEY_ID = 'stripped_db_provider/storage/access_key_id';
     private const XML_PATH_SECRET_ACCESS_KEY = 'stripped_db_provider/storage/secret_access_key';
+    private const XML_PATH_USE_ENCRYPTED_S3_CONFIG = 'stripped_db_provider/storage/using_encrypted_values_for_s3_config';
 
     /**
      * Dump Specific
@@ -31,13 +33,19 @@ class Config
 
     public function __construct(
         private ScopeConfigInterface $config,
-        private DeploymentConfig $deploymentConfig
+        private DeploymentConfig $deploymentConfig,
+        private readonly EncryptorInterface $encrypted
     ) {
     }
 
     public function isEnabled(): bool
     {
         return (bool) $this->config->isSetFlag(self::XML_PATH_ENABLED);
+    }
+
+    public function isEncryptedS3Config(): bool
+    {
+        return (bool) $this->config->isSetFlag(self::XML_PATH_USE_ENCRYPTED_S3_CONFIG);
     }
 
     public function getProjectMeta(): ProjectMeta
@@ -59,12 +67,16 @@ class Config
 
     public function getAccessKeyId(): string
     {
-        return (string) $this->config->getValue(self::XML_PATH_ACCESS_KEY_ID);
+        return $this->isEncryptedS3Config()
+            ? $this->decryptConfigValue((string) $this->config->getValue(self::XML_PATH_ACCESS_KEY_ID))
+            : (string) $this->config->getValue(self::XML_PATH_ACCESS_KEY_ID);
     }
 
     public function getSecretAccessKey(): string
     {
-        return (string) $this->config->getValue(self::XML_PATH_SECRET_ACCESS_KEY);
+        return $this->isEncryptedS3Config()
+            ? $this->decryptConfigValue((string) $this->config->getValue(self::XML_PATH_SECRET_ACCESS_KEY))
+            : (string) $this->config->getValue(self::XML_PATH_SECRET_ACCESS_KEY);
     }
 
     public function getLocalDbConfigData(string $key): ?string
@@ -76,5 +88,10 @@ class Config
                 $key
             )
         );
+    }
+
+    private function decryptConfigValue(string $encryptedConfigValue): ?string
+    {
+        return $this->encrypted->decrypt($encryptedConfigValue);
     }
 }
