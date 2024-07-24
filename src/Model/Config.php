@@ -7,6 +7,7 @@ namespace Jh\StrippedDbProvider\Model;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\DeploymentConfig;
 use Magento\Framework\Config\ConfigOptionsListConstants;
+use Magento\Framework\Encryption\EncryptorInterface;
 
 class Config
 {
@@ -30,8 +31,9 @@ class Config
     const XML_PATH_PROJECT_IGNORE_TABLES = 'stripped_db_provider/dump/project_ignore_tables';
 
     public function __construct(
-        private ScopeConfigInterface $config,
-        private DeploymentConfig $deploymentConfig
+        private readonly ScopeConfigInterface $config,
+        private readonly DeploymentConfig $deploymentConfig,
+        private readonly EncryptorInterface $encryptor
     ) {
     }
 
@@ -59,12 +61,14 @@ class Config
 
     public function getAccessKeyId(): string
     {
-        return (string) $this->config->getValue(self::XML_PATH_ACCESS_KEY_ID);
+        $accessId = $this->config->getValue(self::XML_PATH_ACCESS_KEY_ID);
+        return $this->encryptor->decrypt($accessId);
     }
 
     public function getSecretAccessKey(): string
     {
-        return (string) $this->config->getValue(self::XML_PATH_SECRET_ACCESS_KEY);
+        $accessKey = $this->config->getValue(self::XML_PATH_SECRET_ACCESS_KEY);
+        return $this->encryptor->decrypt($accessKey);
     }
 
     public function getLocalDbConfigData(string $key): ?string
