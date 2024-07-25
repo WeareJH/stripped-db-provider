@@ -7,7 +7,6 @@ namespace Jh\StrippedDbProvider\Model;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\DeploymentConfig;
 use Magento\Framework\Config\ConfigOptionsListConstants;
-use Magento\Framework\Encryption\EncryptorInterface;
 
 class Config
 {
@@ -32,8 +31,7 @@ class Config
 
     public function __construct(
         private readonly ScopeConfigInterface $config,
-        private readonly DeploymentConfig $deploymentConfig,
-        private readonly EncryptorInterface $encryptor
+        private readonly DeploymentConfig $deploymentConfig
     ) {
     }
 
@@ -61,14 +59,12 @@ class Config
 
     public function getAccessKeyId(): string
     {
-        $accessId = $this->config->getValue(self::XML_PATH_ACCESS_KEY_ID);
-        return $this->encryptor->decrypt($accessId);
+        return (string) $this->config->getValue(self::XML_PATH_ACCESS_KEY_ID);
     }
 
     public function getSecretAccessKey(): string
     {
-        $accessKey = $this->config->getValue(self::XML_PATH_SECRET_ACCESS_KEY);
-        return $this->encryptor->decrypt($accessKey);
+        return (string) $this->config->getValue(self::XML_PATH_SECRET_ACCESS_KEY);
     }
 
     public function getLocalDbConfigData(string $key): ?string
