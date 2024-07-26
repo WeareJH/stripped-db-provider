@@ -30,8 +30,8 @@ class Config
     const XML_PATH_PROJECT_IGNORE_TABLES = 'stripped_db_provider/dump/project_ignore_tables';
 
     public function __construct(
-        private ScopeConfigInterface $config,
-        private DeploymentConfig $deploymentConfig
+        private readonly ScopeConfigInterface $config,
+        private readonly DeploymentConfig $deploymentConfig
     ) {
     }
 

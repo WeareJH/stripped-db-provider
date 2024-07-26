@@ -40,6 +40,7 @@ Where `project_ignore_tables` is a list of project specfic tables.
 ### Environment Specific Configuration
 
 Once Installed and deployed to production, you will want to configure it so that it automatically sends stripped DBs to the S3 Bucket.
+You would ned to add access_key_id & secret_access_key as encrypted value. So you can mention these values in admin which will auto encrypt these values.
 Edit the **env.php** file manually and set the following config (values below are examples):
 ```
 'system' => [
@@ -60,6 +61,8 @@ Edit the **env.php** file manually and set the following config (values below ar
         ]
     ]
 ```
+
+You can add access_key_id, secret_access_key, cron_exp from admin also by logging in admin. Go to Store->Configuration->JH Modules->DB Provider
 
 Values are described in the following table:
 
