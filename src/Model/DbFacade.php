@@ -15,7 +15,8 @@ class DbFacade
         private Db\DbUploader $uploader,
         private Db\DbImporter $importer,
         private Db\DbCleaner $cleaner,
-        private Db\DbAdminAccountsManager $adminAccountsManager
+        private Db\DbAdminAccountsManager $adminAccountsManager,
+        private Db\DbConfigManager $dbConfigManager
     ) {
     }
 
@@ -72,6 +73,16 @@ class DbFacade
     public function backupLocalAdminAccounts(ProjectMeta $projectMeta): void
     {
         $this->adminAccountsManager->backupAdminAccounts($projectMeta);
+    }
+
+    public function backupConfigValues(ProjectMeta $projectMeta): void
+    {
+        $this->dbConfigManager->export();
+    }
+
+    public function restoreConfigValue(ProjectMeta $projectMeta): void
+    {
+        $this->dbConfigManager->restore();
     }
 
     public function restoreLocalAdminAccountsFromBackup(ProjectMeta $projectMeta): void

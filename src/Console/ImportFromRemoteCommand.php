@@ -19,7 +19,7 @@ class ImportFromRemoteCommand extends Command
     private const ARGUMENT_PROJECT_NAME = 'source-project-name';
     private const OPTION_NO_ADMIN_ACCOUNT_BACKUP = 'no-admin-backup';
 
-    private const SUCCESS = 1;
+    public const SUCCESS = 1;
 
     public function __construct(
         private DbFacade $dbFacade,
@@ -84,14 +84,28 @@ class ImportFromRemoteCommand extends Command
                 $this->dbFacade->backupLocalAdminAccounts($sourceProjectMeta);
             }
 
+            //TODO: add custom option to allow restore of config only
+            if ($backupAdminAccounts) {
+                $output->writeln('<fg=cyan;options=bold>Backing up config options ...</>');
+                $this->dbFacade->backupConfigValues($sourceProjectMeta);
+            }
+
             $output->writeln("<info>Starting the Database import</info>");
             $this->dbFacade->importDatabaseDump($sourceProjectMeta);
             $output->writeln("<info>Database successfully imported.</info>");
+
+
+            //TODO: check order we need to run it, added first during testing as sometimes backup admin accounts fails
+            if ($backupAdminAccounts) {
+                $output->writeln('<fg=cyan;options=bold>Restoring config options ...</>');
+                $this->dbFacade->restoreConfigValue($sourceProjectMeta);
+            }
 
             if ($backupAdminAccounts) {
                 $output->writeln('<fg=cyan;options=bold>Restoring local admin accounts ...</>');
                 $this->dbFacade->restoreLocalAdminAccountsFromBackup($sourceProjectMeta);
             }
+
         } catch (Exception $e) {
             $output->writeln("<error>{$e->getMessage()}</error>");
         } finally {

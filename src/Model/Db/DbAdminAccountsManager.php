@@ -56,7 +56,7 @@ class DbAdminAccountsManager
             "mysql:host={$hostName};dbname={$dbName}",
             $this->config->getLocalDbConfigData(ConfigOptionsListConstants::KEY_USER),
             $this->config->getLocalDbConfigData(ConfigOptionsListConstants::KEY_PASSWORD),
-            ['skip-definer' => true]
+            ['skip-definer' => true, 'add-drop-table' => true, 'skip-triggers' => true]
         );
         $dumper->restore($this->getAdminAccountsBackupFilePath($projectMeta));
     }
@@ -64,7 +64,7 @@ class DbAdminAccountsManager
     public function cleanUp(ProjectMeta $projectMeta): void
     {
         try {
-            $this->shell->execute("rm %s", [$this->getAdminAccountsBackupFilePath($projectMeta)]);
+//            $this->shell->execute("rm %s", [$this->getAdminAccountsBackupFilePath($projectMeta)]);
         } catch (\Exception $e) {
             //empty
         }
