@@ -62,7 +62,7 @@ Edit the **env.php** file manually and set the following config (values below ar
     ]
 ```
 
-You can add access_key_id, secret_access_key, cron_exp from admin also by logging in admin. Go to Store->Configuration->JH Modules->DB Provider
+You can add access_key_id, secret_access_key, bucket_name, region from admin also by logging in admin. Go to Store->Configuration->Advanced->Stripped DB Provider
 
 Values are described in the following table:
 
