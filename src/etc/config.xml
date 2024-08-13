@@ -7,6 +7,9 @@
                 <secret_access_key backend_model="Magento\Config\Model\Config\Backend\Encrypted"></secret_access_key>
                 <access_key_id backend_model="Magento\Config\Model\Config\Backend\Encrypted"></access_key_id>
             </storage>
+            <dump>
+                <config_paths_keep>payment/%</config_paths_keep>
+            </dump>
         </stripped_db_provider>
     </default>
 </config>
