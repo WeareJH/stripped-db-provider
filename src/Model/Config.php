@@ -81,11 +81,9 @@ class Config
 
     public function getConfigPathsToKeep(): array
     {;
-        $defaultPaths = explode(
+        return explode(
             ',',
             (string) $this->config->getValue(self::XML_PATH_PROJECT_KEEP_CONFIG_PATHS)
         );
-
-        return array_merge($defaultPaths, $projectIgnoredPaths);
     }
 }
