@@ -24,7 +24,7 @@ class ImportFromRemoteCommand extends Command
     private CONST VALUE_CONFIG_PRESERVE = 'preserve-local';
     private CONST VALUE_CONFIG_MERGE = 'merge';
 
-    private const SUCCESS = 1;
+    public const SUCCESS = 1;
 
     public function __construct(
         private DbFacade $dbFacade,
