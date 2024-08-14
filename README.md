@@ -107,10 +107,22 @@ reimport them
 bin/magento wearejh:stripped-db-provider:import-from-remote PROJECT NAME 
 ```
 
-To skip admin accounts backup
+#### To skip admin accounts backup
 
 ```
-bin/magento wearejh:stripped-db-provider:import-from-remote PROJECT NAME --no-admin-backup=1
+bin/magento wearejh:stripped-db-provider:import-from-remote PROJECT NAME --no-admin-backup=1 
+```
+
+#### Config backup
+
+The `config-backup` option accepts 3 values:
+* *skip* - skips the backup of local config and imports everything from the remote
+* *merge* - backs up only the paths configured under `stripped_db_provider/dump/config_paths_keep` (accepts MySQL wildcards `%`),
+  imports everything from the remote and merges the backed up config with the remote config
+* *preserve-local* - backs up the whole `core_config_data` and restores it after the DB import from remote
+
+```
+bin/magento wearejh:stripped-db-provider:import-from-remote PROJECT NAME --config-backup=merge
 ```
 
 ## Issues / Feature Request

@@ -15,7 +15,8 @@ class DbFacade
         private Db\DbUploader $uploader,
         private Db\DbImporter $importer,
         private Db\DbCleaner $cleaner,
-        private Db\DbAdminAccountsManager $adminAccountsManager
+        private Db\DbAdminAccountsManager $adminAccountsManager,
+        private Db\DbConfigBackupManager $configBackupManager
     ) {
     }
 
@@ -82,5 +83,30 @@ class DbFacade
     public function cleanUpAdminAccountsBackup(ProjectMeta $projectMeta): void
     {
         $this->adminAccountsManager->cleanUp($projectMeta);
+    }
+
+    public function backupLocalConfig(ProjectMeta $projectMeta): void
+    {
+        $this->configBackupManager->backupConfig($projectMeta);
+    }
+
+    public function restoreLocalConfigFromBackup(ProjectMeta $projectMeta): void
+    {
+        $this->configBackupManager->restoreConfigBackup($projectMeta);
+    }
+
+    public function cleanUpConfigBackup(ProjectMeta $projectMeta): void
+    {
+        $this->configBackupManager->cleanUp($projectMeta);
+    }
+
+    public function backupConfigValues(): void
+    {
+        $this->configBackupManager->cacheConfigValuesToKeep();
+    }
+
+    public function restoreConfigValues(): void
+    {
+        $this->configBackupManager->restoreConfigValuesToKeep();
     }
 }

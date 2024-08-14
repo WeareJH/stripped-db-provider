@@ -28,6 +28,7 @@ class Config
      * Dump Specific
      */
     const XML_PATH_PROJECT_IGNORE_TABLES = 'stripped_db_provider/dump/project_ignore_tables';
+    const XML_PATH_PROJECT_KEEP_CONFIG_PATHS = 'stripped_db_provider/dump/config_paths_keep';
 
     public function __construct(
         private readonly ScopeConfigInterface $config,
@@ -76,5 +77,15 @@ class Config
                 $key
             )
         );
+    }
+
+    public function getConfigPathsToKeep(): array
+    {;
+        $defaultPaths = explode(
+            ',',
+            (string) $this->config->getValue(self::XML_PATH_PROJECT_KEEP_CONFIG_PATHS)
+        );
+
+        return array_merge($defaultPaths, $projectIgnoredPaths);
     }
 }
