@@ -16,4 +16,15 @@
             </argument>
         </arguments>
     </type>
+    <type name="Jh\StrippedDbProvider\Console\UploadToRemoteCommand">
+        <arguments>
+            <argument name="dbFacade" xsi:type="object">Jh\StrippedDbProvider\Model\DbFacade\Proxy</argument>
+            <argument name="config" xsi:type="object">Jh\StrippedDbProvider\Model\Config\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Jh\StrippedDbProvider\Console\ImportFromRemoteCommand">
+        <arguments>
+            <argument name="dbFacade" xsi:type="object">Jh\StrippedDbProvider\Model\DbFacade\Proxy</argument>
+        </arguments>
+    </type>
 </config>
