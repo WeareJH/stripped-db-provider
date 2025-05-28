@@ -34,6 +34,7 @@ class DbAdminAccountsManager
             [
                 'skip-definer' => true,
                 'add-drop-table' => true,
+                'skip-triggers' => true,
                 'include-tables' => [
                     'admin_passwords',
                     'admin_system_messages',
