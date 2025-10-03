@@ -25,9 +25,13 @@ class ClientProvider
     public function getClient(): S3Client
     {
         if (is_null($this->client)) {
+            $accessKeyId = $this->config->getAccessKeyId();
+            $secretAccessKey = $this->config->getSecretAccessKey();
+            $this->validateCredentials($accessKeyId, $secretAccessKey);
+
             $credentials = new Credentials(
-                $this->config->getAccessKeyId(),
-                $this->config->getSecretAccessKey()
+                $accessKeyId,
+                $secretAccessKey
             );
 
             $this->client = new S3Client([
@@ -40,5 +44,10 @@ class ClientProvider
         return $this->client;
     }
 
-
+    private function validateCredentials(?string $accessKey, ?string $secretKey): void
+    {
+        if (empty($accessKey) || empty($secretKey)) {
+            throw new \RuntimeException('Credentials are not set in the configuration');
+        }
+    }
 }
