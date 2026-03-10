@@ -28,7 +28,7 @@ class ImportFromRemoteCommand extends Command
 
     public function __construct(
         private DbFacade $dbFacade,
-        string $name = null
+        ?string $name = null
     ) {
         parent::__construct($name);
     }
