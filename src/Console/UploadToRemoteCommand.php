@@ -14,7 +14,7 @@ class UploadToRemoteCommand extends Command
 {
     private const OPTION_FULL_DUMP = 'full';
 
-    public function __construct(private DbFacade $dbFacade, private Config $config, string $name = null)
+    public function __construct(private DbFacade $dbFacade, private Config $config, ?string $name = null)
     {
         parent::__construct($name);
     }
